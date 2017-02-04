@@ -1,0 +1,84 @@
+//Progress Style
+//
+//
+// Required html structure:
+// <div class="any__semantic--class-you-like">
+//     <div class="pc--30"></div>
+//     <div class="pc--text">30%</div>
+// </div>
+//
+// Required scss
+// .any__semantic--class-you-like {
+//   @include progress-circle(30%, size, border, main color, shaded color, fill color, font-size);
+// }
+//
+
+
+
+@mixin progress-circle($percentage, $size: 50px, $border: 5px, $color: #3498db, $bg-color: #d3d3d3, $fill-color: #fcfcfc, $font: 11px) {
+  & {
+    @extend %progress-base;
+
+    height: $size;
+    width: $size;
+
+  }
+  @at-root {
+    .pc {
+      &--#{round($percentage/100%*100)} {
+        @extend %progress-base-bg;
+        background-color: $bg-color;
+        &:before {
+          @extend %progress-base-bg;
+          border: $border solid $color;
+          clip-path: inset(0 50% 0 0);
+          @if ($percentage > 50%) {
+            transform: rotate(180-$percentage/100%*360deg);
+
+          } @else if ($percentage <= 50%) {
+            transform: rotate(0deg);
+          }
+        }
+        &:after {
+          @extend %progress-base-bg;
+          @if ($percentage > 50%) {
+            border: $border solid $color;
+            transform: rotate(360deg);
+
+          } @else if ($percentage <= 50%) {
+            border: ($border + 1px) solid $bg-color;
+            transform: rotate(360-$percentage/100%*360deg);
+          }
+          clip-path: inset(0 50% 0 0);
+        }
+      }
+      &--text {
+        width: $size - ($border * 2);
+        line-height: $size - ($border * 2);
+        margin: $border;
+        border-radius: 50%;
+        position: absolute;
+        text-align: center;
+        font-size: $font;
+        font-weight: bold;
+        background-color: $fill-color;
+        color: invert($fill-color);
+      }
+    }
+  }
+}
+
+%progress-base {
+  position: relative;
+  padding: 0;
+  margin: 0 auto;
+}
+
+%progress-base-bg {
+  border-radius: 50%;
+  position: absolute;
+  display: block;
+  height: 100%;
+  width: 100%;
+  content: "";
+}

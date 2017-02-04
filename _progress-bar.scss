@@ -1,0 +1,84 @@
+//Progress Style
+//
+//
+// Required html structure:
+// <div class="any__semantic--class-you-like">
+//     <div class="p--59">
+//     </div>
+// </div>
+//
+// Required scss
+// .any__semantic--class-you-like {
+//   @include progress-bar(59%, optional style);
+// }
+//
+
+%progress-bar {
+  width: 100%;
+  height: 0.75rem;
+  border: 0.125em solid darken(#3f3f3f, 3);
+  background: darken(#3f3f3f, 5);
+  overflow: hidden;
+  border-radius: 25px;
+  &--solid-blue {
+    width: 100%;
+    height: 7px;
+    background: lightgrey;
+    overflow: hidden;
+    border-radius: 0;
+  }
+}
+
+%progress-percentage {
+  display: block;
+  float: left;
+  height: 100%;
+  &--solid-blue {
+    background: #018cd4;
+  }
+}
+
+%progress-after {
+  display: block;
+  font-family: Helvetica, Arial, sans-serif;
+  color: #fff;
+  text-align: right;
+  padding: 0 0.75em;
+  font-size: 0.6rem;
+  line-height: 1.25;
+  font-weight: bold;
+  &--solid-blue {
+    color: #fff;
+  }
+}
+
+//Progress Mixin
+
+@mixin progress-bar($percentage, $style: null) {
+  & {
+    @if not ($style) {
+      @extend %progress-bar;
+    } @else {
+      @extend %progress-bar--#{$style};
+    }
+  }
+  @at-root .p--#{round($percentage/100%*100)} {
+    @extend %progress-percentage;
+    @if not ($style) {
+      background: rgb(100% - $percentage, $percentage, 50%);
+    } @else {
+      @extend %progress-percentage--#{$style};
+    }
+    width: $percentage;
+    &:after {
+      @if not ($style) {
+        @extend %progress-after;
+        content: "#{round($percentage)}";
+      } @else {
+        @extend %progress-after--#{$style};
+      }
+    }
+  }
+}
+
+
