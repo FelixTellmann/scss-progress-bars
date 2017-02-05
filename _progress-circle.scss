@@ -13,8 +13,6 @@
 // }
 //
 
-
-
 @mixin progress-circle($percentage, $size: 50px, $border: 5px, $color: #3498db, $bg-color: #d3d3d3, $fill-color: #fcfcfc, $font: 11px) {
   & {
     @extend %progress-base;
@@ -51,18 +49,16 @@
           }
           clip-path: inset(0 50% 0 0);
         }
-      }
-      &--text {
-        width: $size - ($border * 2);
-        line-height: $size - ($border * 2);
-        margin: $border;
-        border-radius: 50%;
-        position: absolute;
-        text-align: center;
-        font-size: $font;
-        font-weight: bold;
-        background-color: $fill-color;
-        color: invert($fill-color);
+        & + .pc--text {
+          @extend %progress-base-text;
+          width: $size - ($border * 2);
+          line-height: $size - ($border * 2);
+          margin: $border;
+          font-size: $font;
+          background-color: $fill-color;
+          color: invert($fill-color);
+        }
+
       }
     }
   }
@@ -81,4 +77,11 @@
   height: 100%;
   width: 100%;
   content: "";
+}
+
+%progress-base-text {
+  border-radius: 50%;
+  position: absolute;
+  text-align: center;
+  font-weight: bold;
 }
